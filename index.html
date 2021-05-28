@@ -15,11 +15,12 @@
         </header>
         <form onsubmit="return false">
             <div id="radioDiv">
-                <input type="radio" name="cipher" id="caesar">
+                <input type="radio" name="cipher" id="caesar" value="caesar" onclick="addShift()">
                 <label for="caesar">Caesar cipher</label>
-                <input type="radio" name="cipher" id= "vigenere">
+                <input type="radio" name="cipher" id= "vigenere" value="vigenere" onclick="addKey()">
                 <label for="vigenere">Vigenere cipher</label>
             </div>
+            <div id="extraInput"></div>
             <div id="textareaDiv">
                 <label for="text">Message to encrypt/decrypt</label> <br>
                 <textarea name="text" id="textarea"></textarea>
@@ -31,4 +32,5 @@
         </form>
     </div>
 </body>
+<script src="cipher.js"></script>
 </html>

@@ -31,7 +31,7 @@ header p {
 }
 #textareaDiv{
     text-align: center;
-    margin-top: 15%;
+    margin-top: 5%;
 }
 textarea{
     border-radius: 2%;
@@ -50,4 +50,9 @@ textarea{
 
 #submitDiv input:active{
     box-shadow: 1px 3px rgb(201,45,45)
+}
+#extraInput{
+    text-align: center;
+    margin-top: 10px;
+    
 }
