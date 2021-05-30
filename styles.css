@@ -1,69 +1,69 @@
-
 body{
-    font-family: Arial, Helvetica, sans-serif;
     background-image: url(./Images/letters.jpg);
     background-position:50% 50%;
     background-repeat: no-repeat;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#extraInput{
+    margin-top: 10px;
+    text-align: center;
 }
 #mainContainer{
     background-color: rgba(129, 71, 77, 0.849);
     border-radius: 15%;
-    position: relative;
     margin: auto;
-    width: 80vh;
     height: 80vh;
+    position: relative;
+    width: 80vh;   
 }
 header h1{
-    text-shadow: 2px 2px rgb(0, 0, 0);
+    color: rgb(228, 225, 225);
     font-family: 'Courier New', Courier, monospace;
     font-size: 60px;
     text-align: center;
-    color: rgb(228, 225, 225);
+    text-shadow: 2px 2px rgb(0, 0, 0);  
 }
 header p {
-    text-shadow: 2px 2px rgb(0, 0, 0);
+    color: rgb(228, 225, 225);
     font-family: Arial, Helvetica, sans-serif;
     font-size: 25px;
     text-align: center;
+    text-shadow: 2px 2px rgb(0, 0, 0);
+}
+label{
     color: rgb(228, 225, 225);
+    font-size: 20px;
+    font-weight: 500;
+    text-shadow: 2px 2px rgb(0, 0, 0);  
 }
 #radioDiv{
     text-align: center;
 }
-label{
-    color: rgb(228, 225, 225);
-    text-shadow: 2px 2px rgb(0, 0, 0);
-    font-weight: 500;
-    font-size: 20px;
-}
+
 #radioDiv input{
     margin-left: 15px;
     margin-top: 20px;
-}
-#textareaDiv{
-    text-align: center;
-    margin-top: 5%;
-}
-textarea{
-    border-radius: 2%;
-    margin-top: 10px;
-    height: 300px;
-    width: 80%;
 }
 #submitDiv{
     text-align: center;
 }
 #submitDiv input{
-    height: 35px;
-    width: 80px;
     border-radius: 15%;
+    height: 35px;
+    width: 80px; 
 }
 
 #submitDiv input:active{
     box-shadow: 1px 5px rgb(34, 16, 8);
 }
-#extraInput{
+#textareaDiv{
+    margin-top: 5%;
     text-align: center;
-    margin-top: 10px;
-    
 }
+textarea{
+    border-radius: 2%;
+    height: 300px;
+    margin-top: 10px;
+    width: 80%;
+}
+
