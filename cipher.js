@@ -100,14 +100,15 @@ Send the plaintext and the extra information to the encryption method
 */
 function encrypt(type){
     var plaintext = document.getElementById('textarea').value;
-    var shift =  document.getElementById('extraInfo').value;
+    var ExtraInfo =  document.getElementById('extraInfo').value;
     switch(type){
         case "caesar":
-            var textEncrypted = encryptCaesar(plaintext, shift);
-            displayText(textEncrypted);
+            var textEncryptedCaesar = encryptCaesar(plaintext, ExtraInfo);
+            displayText(textEncryptedCaesar);
             break;
         case "vigenere":
-            cipherVigenere();
+            var textEncryptVigenere = encryptVigenere(plaintext, ExtraInfo);
+            displayText(textEncryptVigenere);
             break;
     }
     
@@ -123,10 +124,19 @@ function decrypt(type){
             displayText(textDecrypt);
             break;
         case "vigenere":
-            cipherVigenere();
+            //decryptVigenere();
             break;
     }
 }
+
+/*
+This function will remove the text in the textarea to replace it with the new encrypted/decrypted text
+*/
+function displayText(encryptedText){
+    document.getElementById('textarea').value =encryptedText;
+}
+
+/*--------------------------------------------------Caesar Cipher----------------------------------------------------*/
 
 /*
 This function will separate the text into characters and check if they are uppercase, lowercase, or any other character. If is letter, it will call
@@ -224,9 +234,17 @@ function decryptCaesarLower(letter, shift){
     return cipherLetter;
 }
 
-/*
-This function will remove the text in the textarea to replace it with the new encrypted/decrypted text
-*/
-function displayText(encryptedText){
-    document.getElementById('textarea').value =encryptedText;
+
+
+/*--------------------------------------------------Vigenere Cipher----------------------------------------------------*/ 
+
+function fixedKey(key){
+    fixKey = key.replaceAll(/[0-9] \ /g, "");
+    return fixKey;
+}
+
+function encryptVigenere(plaintext, key){
+    ciphertext ="";
+    var cleanKey = fixedKey(key);
+    console.log(cleanKey);
 }
