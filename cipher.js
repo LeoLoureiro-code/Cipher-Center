@@ -95,19 +95,27 @@ function isLetter(letter){
     }
 }
 
+
 /*
 Send the plaintext and the extra information to the encryption method 
 */
 function encrypt(type){
     var plaintext = document.getElementById('textarea').value;
-    var ExtraInfo =  document.getElementById('extraInfo').value;
+    var extraInfo =  document.getElementById('extraInfo').value;
     switch(type){
         case "caesar":
-            var textEncryptedCaesar = encryptCaesar(plaintext, ExtraInfo);
+            if(extraInfo === "" || extraInfo < 1){
+                throw false;
+            }
+            var textEncryptedCaesar = encryptCaesar(plaintext, extraInfo);
             displayText(textEncryptedCaesar);
             break;
         case "vigenere":
-            var textEncryptVigenere = encryptVigenere(plaintext, ExtraInfo);
+            if(extraInfo === "" || checkSpecialChar(extraInfo)){
+                alert("Key can only have letters");
+                throw false;
+            }
+            var textEncryptVigenere = encryptVigenere(plaintext, extraInfo);
             displayText(textEncryptVigenere);
             break;
     }
@@ -120,11 +128,13 @@ function decrypt(type){
     var shift =  document.getElementById('extraInfo').value;
     switch(type){
         case "caesar":
-            var textDecrypt = decryptCaesar(plaintext, shift);
-            displayText(textDecrypt);
+            var textDecryptCaesar = decryptCaesar(plaintext, shift);
+            displayText(textDecryptCaesar);
             break;
         case "vigenere":
-            //decryptVigenere();
+            var textDecryptVigenere = decryptVigenere(plaintext, extraInfo.value);
+            console.log(textDecryptVigenere);
+            displayText(textDecryptVigenere);
             break;
     }
 }
@@ -237,14 +247,87 @@ function decryptCaesarLower(letter, shift){
 
 
 /*--------------------------------------------------Vigenere Cipher----------------------------------------------------*/ 
+function checkSpecialChar(key){
+    var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    var digits = /\d/;
+    if(format.test(key) || digits.test(key)){
+      return true;
+    } else {
+      return false;
+    }
+}
 
-function fixedKey(key){
-    fixKey = key.replaceAll(/[0-9] \ /g, "");
-    return fixKey;
+//Conseguir la nueva llave correspondiente al largo del texto
+function getNewKey(key, plaintext){
+    var cleanPlaintext = plaintext.replaceAll(" ", "");
+    var difference = Math.ceil((cleanPlaintext.length / key.length));
+    var repeatKey = key.repeat(difference);
+    //console.log("El tamaño del texto ",cleanPlaintext.length,"El tamaño de la llave ", repeatKey.length);
+    return repeatKey;
 }
 
 function encryptVigenere(plaintext, key){
-    ciphertext ="";
-    var cleanKey = fixedKey(key);
-    console.log(cleanKey);
+    var alphabetLower = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+    var alphabetUpper = ["A","B","C","D","E","F","G", "H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+    var ciphertext ="";
+    var fixKey = key.replaceAll(" ", "");
+    var cleanKey = getNewKey(fixKey, plaintext).toLowerCase();
+    if(plaintext === "" || plaintext === null){
+        alert("There is no text, or the text is null");
+        throw false;
+      }else if (key === "" || key === null || checkSpecialChar(key)){
+        alert("There is no key, the key is null, or has special characters");
+        throw false;
+      }
+    for(var i = 0, j = 0; i < plaintext.length; i++){
+        if(isLetter(plaintext[i])){
+          if(isLower(plaintext[i])){
+                keyLower = cleanKey[j];
+                ciphertext += alphabetLower[((alphabetLower.indexOf(plaintext[i]) + alphabetLower.indexOf(keyLower)) % 26)];
+                j++;
+          }else if(isUpper(plaintext[i])){ 
+                keyUpper = cleanKey[j];
+                ciphertext += alphabetUpper[((alphabetUpper.indexOf(plaintext[i]) + alphabetUpper.indexOf(keyUpper.toUpperCase())) % 26)];
+                j++;
+          }
+        }
+        else{
+          ciphertext += plaintext[i];     
+        }
+      }
+      return ciphertext;
+}
+
+function decryptVigenere(ciphertext, key){
+    var alphabetLower = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+    var alphabetUpper = ["A","B","C","D","E","F","G", "H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+    var plaintext = "";
+    var fixKey = key.replaceAll(" ", "");
+    var cleanKey = getNewKey(fixKey, plaintext).toLowerCase();
+    if(ciphertext === "" || ciphertext === null){
+        alert("There is no text, or the text is null");
+        throw false;
+      }else if (key === "" || key === null || checkSpecialChar(key)){
+        alert("There is no key, the key is null, or has special characters");
+        throw false;
+      }
+    for(var i = 0, j = 0; i < ciphertext.length; i++){
+        if(isLetter(ciphertext[i])){
+          if(isLower(ciphertext[i])){
+                keyLower = cleanKey[j];
+                plaintext += alphabetLower[((alphabetLower.indexOf(ciphertext[i]) - alphabetLower.indexOf(keyLower) % 26))];
+                console.log(plaintext);
+                j++;
+          }else if(isUpper(ciphertext[i])){ 
+                keyUpper = cleanKey[j];
+                plaintext += alphabetUpper[((alphabetUpper.indexOf(ciphertext[i]) - alphabetUpper.indexOf(keyUpper.toUpperCase()) % 26))];
+                console.log(plaintext);
+                j++;
+          }
+        }
+        else{
+          plaintext += ciphertext[i];     
+        }
+      }
+      return plaintext;
 }
