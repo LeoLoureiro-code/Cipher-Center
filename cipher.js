@@ -143,6 +143,7 @@ function decrypt(type){
 This function will remove the text in the textarea to replace it with the new encrypted/decrypted text
 */
 function displayText(encryptedText){
+    document.getElementById('textarea').innerHTML ="";
     document.getElementById('textarea').value =encryptedText;
 }
 
@@ -150,10 +151,10 @@ function displayText(encryptedText){
 
 /*
 This function will separate the text into characters and check if they are uppercase, lowercase, or any other character. If is letter, it will call
-the respective function to cipher the letter, if is not, it will add it to the string without modification.
+the respective function to encrypt the letter, if is not, it will add it to the string without modification.
 */
 function encryptCaesar(plaintext, shift){
-    ciphertext = "";
+    let ciphertext = "";
     for(var i = 0; i < plaintext.length; i++){
         if(isLetter(plaintext[i])){
             if(isUpper(plaintext[i])){
@@ -171,8 +172,12 @@ function encryptCaesar(plaintext, shift){
     
 }
 
+/*
+This function will separate the text into characters and check if they are uppercase, lowercase, or any other character. If is letter, it will call
+the respective function to decrypt the letter, if is not, it will add it to the string without modification.
+*/
 function decryptCaesar(ciphertext, shift){
-    plaintext = "";
+    let plaintext = "";
     for(var i = 0; i < ciphertext.length; i++){
         if(isLetter(ciphertext[i])){
             if(isUpper(ciphertext[i])){
@@ -257,77 +262,81 @@ function checkSpecialChar(key){
     }
 }
 
-//Conseguir la nueva llave correspondiente al largo del texto
-function getNewKey(key, plaintext){
-    var cleanPlaintext = plaintext.replaceAll(" ", "");
-    var difference = Math.ceil((cleanPlaintext.length / key.length));
-    var repeatKey = key.repeat(difference);
-    //console.log("El tamaño del texto ",cleanPlaintext.length,"El tamaño de la llave ", repeatKey.length);
-    return repeatKey;
+//Get the newKey with enough length depending of the text
+function getNewKey(plaintext, key){
+    let cleanPlaintext = plaintext.replaceAll(" ", "");
+    let cleanKey =  key.replaceAll(" ", "");
+    let newKey = "";
+        for(var i = 0, j = 0; i < cleanPlaintext.length; i++){
+            newKey += cleanKey[j];
+            j++;
+            if(j >= cleanKey.length){
+                j = 0;
+            }
+        }
+    
+    return newKey;
 }
 
+/*
+This function will separate the text into characters and check if they are uppercase, lowercase, or any other character. If is letter, it will call
+the respective function to encrypt the letter, if is not, it will add it to the string without modification.
+*/
 function encryptVigenere(plaintext, key){
-    var alphabetLower = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-    var alphabetUpper = ["A","B","C","D","E","F","G", "H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-    var ciphertext ="";
-    var fixKey = key.replaceAll(" ", "");
-    var cleanKey = getNewKey(fixKey, plaintext).toLowerCase();
-    if(plaintext === "" || plaintext === null){
-        alert("There is no text, or the text is null");
-        throw false;
-      }else if (key === "" || key === null || checkSpecialChar(key)){
-        alert("There is no key, the key is null, or has special characters");
-        throw false;
-      }
-    for(var i = 0, j = 0; i < plaintext.length; i++){
+    var ciphertext = "";
+    var newKey = getNewKey(plaintext, key);
+    for(let i = 0, j = 0; i < plaintext.length; i++){
         if(isLetter(plaintext[i])){
-          if(isLower(plaintext[i])){
-                keyLower = cleanKey[j];
-                ciphertext += alphabetLower[((alphabetLower.indexOf(plaintext[i]) + alphabetLower.indexOf(keyLower)) % 26)];
+            if(isUpper(plaintext[i])){
+                ciphertext += encryptVigenereLetter(plaintext[i], newKey[j]);
                 j++;
-          }else if(isUpper(plaintext[i])){ 
-                keyUpper = cleanKey[j];
-                ciphertext += alphabetUpper[((alphabetUpper.indexOf(plaintext[i]) + alphabetUpper.indexOf(keyUpper.toUpperCase())) % 26)];
+            }
+            if(isLower(plaintext[i])){
+                ciphertext += encryptVigenereLetter(plaintext[i].toUpperCase(), newKey[j].toLowerCase()).toLowerCase();
                 j++;
-          }
+            }
+        }else{
+            ciphertext += plaintext[i];
         }
-        else{
-          ciphertext += plaintext[i];     
-        }
-      }
-      return ciphertext;
+        
+    }
+    return ciphertext;
 }
 
+/*
+This function will separate the text into characters and check if they are uppercase, lowercase, or any other character. If is letter, it will call
+the respective function to decrypt the letter, if is not, it will add it to the string without modification.
+*/
 function decryptVigenere(ciphertext, key){
-    var alphabetLower = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-    var alphabetUpper = ["A","B","C","D","E","F","G", "H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-    var plaintext = "";
-    var fixKey = key.replaceAll(" ", "");
-    var cleanKey = getNewKey(fixKey, plaintext).toLowerCase();
-    if(ciphertext === "" || ciphertext === null){
-        alert("There is no text, or the text is null");
-        throw false;
-      }else if (key === "" || key === null || checkSpecialChar(key)){
-        alert("There is no key, the key is null, or has special characters");
-        throw false;
-      }
-    for(var i = 0, j = 0; i < ciphertext.length; i++){
+    let plaintext = "";
+     var newKey = getNewKey(ciphertext, key);
+     for(let i = 0, j = 0; i < ciphertext.length; i++){
         if(isLetter(ciphertext[i])){
-          if(isLower(ciphertext[i])){
-                keyLower = cleanKey[j];
-                plaintext += alphabetLower[((alphabetLower.indexOf(ciphertext[i]) - alphabetLower.indexOf(keyLower) % 26))];
-                console.log(plaintext);
+            if(isUpper(ciphertext[i])){
+                plaintext += decryptVigenereLetter(ciphertext[i], newKey[j]);
                 j++;
-          }else if(isUpper(ciphertext[i])){ 
-                keyUpper = cleanKey[j];
-                plaintext += alphabetUpper[((alphabetUpper.indexOf(ciphertext[i]) - alphabetUpper.indexOf(keyUpper.toUpperCase()) % 26))];
-                console.log(plaintext);
+            }
+            if(isLower(ciphertext[i])){
+                plaintext += decryptVigenereLetter(ciphertext[i], newKey[j]).toLowerCase(); //Change the new letter to lower if the plaintext is lower
                 j++;
-          }
+            }
+        }else{
+            plaintext += ciphertext[i];
         }
-        else{
-          plaintext += ciphertext[i];     
-        }
-      }
-      return plaintext;
+     }
+    return plaintext;
+}
+
+/*This function will take a letter from plaintext and a letter from key, add their ASCII code, mod them by 26 to create a new cipher letter*/
+function encryptVigenereLetter(letter, key){
+    var cipherLetterNo = (letter.charCodeAt(0) + key.toUpperCase().charCodeAt(0)) %26;
+    var cipherLetter = String.fromCharCode(cipherLetterNo + 65);
+    return cipherLetter;
+}
+
+/*This function will take a letter from ciphertext and a letter from key, add their ASCII code, add them 26, mod them by 26 to decrypt the letter*/
+function decryptVigenereLetter(letter, key){
+    var plainLetterNo = (letter.toUpperCase().charCodeAt(0) - key.toUpperCase().charCodeAt(0) +26) %26;
+    var plainLetter = String.fromCharCode(plainLetterNo + 65);
+    return plainLetter;
 }

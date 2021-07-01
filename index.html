@@ -8,28 +8,32 @@
     <title>Cipher Center</title>
 </head>
 <body>
-    <div id="mainContainer">
-        <header>
-            <h1>Cipher Center</h1>
-            <p>Choose encryption for your text</p>
-        </header>
-        <form onsubmit="return false">
-            <div id="radioDiv">
-                <input type="radio" name="cipher" id="caesar" value="caesar" onclick="addShift()">
-                <label for="caesar">Caesar cipher</label>
-                <input type="radio" name="cipher" id= "vigenere" value="vigenere" onclick="addKey()">
-                <label for="vigenere">Vigenere cipher</label>
+    <div id="imageContainer">
+        <div id="mainContainer">
+            <div id="itemsCointainer">
+                <header>
+                    <h1>Cipher Center</h1>
+                    <p>Choose encryption for your text</p>
+                </header>
+                <form onsubmit="return false">
+                    <div id="radioDiv">
+                        <input type="radio" name="cipher" id="caesar" value="caesar" onclick="addShift()">
+                        <label for="caesar">Caesar cipher</label>
+                        <input type="radio" name="cipher" id= "vigenere" value="vigenere" onclick="addKey()">
+                        <label for="vigenere">Vigenere cipher</label>
+                    </div>
+                    <div id="extraInput"></div>
+                    <div id="textareaDiv">
+                        <label for="text">Message to encrypt/decrypt</label> <br>
+                        <textarea name="text" id="textarea"></textarea>
+                    </div>
+                    <div id="submitDiv">
+                        <input type="submit" id="encryptBtn" value="Encrypt" onclick="typeOfEncrypt()">
+                        <input type="submit" id="decryptBtn" value="Decrypt" onclick="typeOfDecrypt()">
+                    </div>
+                </form>
             </div>
-            <div id="extraInput"></div>
-            <div id="textareaDiv">
-                <label for="text">Message to encrypt/decrypt</label> <br>
-                <textarea name="text" id="textarea"></textarea>
-            </div>
-            <div id="submitDiv">
-                <input type="submit" id="encryptBtn" value="Encrypt" onclick="typeOfEncrypt()">
-                <input type="submit" id="decryptBtn" value="Decrypt" onclick="typeOfDecrypt()">
-            </div>
-        </form>
+        </div>
     </div>
 </body>
 <script src="cipher.js"></script>
