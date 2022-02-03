@@ -4,37 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Cipher Center</title>
+    <link rel="stylesheet" href="sass/index.css">
+    <title>Vigenere Cipher</title>
 </head>
+
 <body>
-    <div id="imageContainer">
-        <div id="mainContainer">
-            <div id="itemsCointainer">
-                <header>
-                    <h1>Cipher Center</h1>
-                    <p>Choose encryption for your text</p>
-                </header>
-                <form onsubmit="return false">
-                    <div id="radioDiv">
-                        <input type="radio" name="cipher" id="caesar" value="caesar" onclick="addShift()">
-                        <label for="caesar">Caesar cipher</label>
-                        <input type="radio" name="cipher" id= "vigenere" value="vigenere" onclick="addKey()">
-                        <label for="vigenere">Vigenere cipher</label>
-                    </div>
-                    <div id="extraInput"></div>
-                    <div id="textareaDiv">
-                        <label for="text">Message to encrypt/decrypt</label> <br>
-                        <textarea name="text" id="textarea"></textarea>
-                    </div>
-                    <div id="submitDiv">
-                        <input type="submit" id="encryptBtn" value="Encrypt" onclick="typeOfEncrypt()">
-                        <input type="submit" id="decryptBtn" value="Decrypt" onclick="typeOfDecrypt()">
-                    </div>
-                </form>
+    <main>
+        <header>
+            <h1>Vigenere Cipher</h1>
+        </header>
+        <form id="form">
+            <label for="key">Key</label>
+            <input type="text" name="key" id="key">
+            <textarea name="text" id="textarea" placeholder="Message..."></textarea>
+            <div class="submitDiv">
+                <input type="submit" class="btn" id="encrypt-btn" value="Encrypt">
+                <input type="submit" class="btn" id="decrypt-btn" value ="Decrypt">
             </div>
-        </div>
-    </div>
+        </form>
+    </main>
 </body>
-<script src="cipher.js"></script>
+<script src="index.js"></script>
+
 </html>
